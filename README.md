@@ -7,7 +7,7 @@
 - base_line_solution.sas : base working solution added. Kaggle score: 0.13770
 
 Todo:
-[ ] higher order of transformations
-[ ] interactions
-[ ] polish it
-[ ] add comments
+- higher order of transformations
+- interactions
+- polish it
+- add comments
