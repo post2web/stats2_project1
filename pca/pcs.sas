@@ -33,7 +33,7 @@ data test;
 	drop GarageCars;
 	if new8=. then new8=0;
 	rename new8=GarageCars;
-	
+
 data test;
 	set test;
 	KEEP Id LotArea OverallQual OverallCond YearBuilt YearRemodAdd _1stFlrSF GrLivArea BsmtFullBath BsmtHalfBath FullBath HalfBath TotRmsAbvGrd Fireplaces GarageCars;
@@ -41,18 +41,18 @@ data test;
 data dataset;
 	set train test;
 	KEEP Id SalePrice LotArea OverallQual OverallCond YearBuilt YearRemodAdd _1stFlrSF GrLivArea BsmtFullBath BsmtHalfBath FullBath HalfBath TotRmsAbvGrd Fireplaces GarageCars;
-	
+
 
 data transformed;
 	set dataset;
 	drop Id;
 	drop SalePrice;
-	
+
 	array vars _numeric_;
 	do over vars;
 		vars=log(vars+1);
 	end;
-	
+
 data dataset;
 	merge dataset transformed;
 	SalePrice = log10(SalePrice);
@@ -92,7 +92,7 @@ data influance;
  */
 data dataset;
 	merge dataset influance;
-	
+
 data dataset;
 	set dataset;
 	where cookd < 4/1460;
@@ -112,7 +112,6 @@ run;
  * create regression with PCA
  */
 proc pls data=dataset cv=SPLIT(5) nfac=8;
-	class 
 	model SalePrice = LotArea OverallQual OverallCond YearBuilt YearRemodAdd _1stFlrSF GrLivArea BsmtFullBath BsmtHalfBath FullBath HalfBath TotRmsAbvGrd Fireplaces GarageCars;
 	output out=regout(where=(SalePrice=.)) p=predicted;
 run;
@@ -133,7 +132,7 @@ data submission;
 proc export data=submission dbms=csv
 	outfile="/home/iangelov0/kaggle/submission.csv"
 	replace;
-/* 
+/*
  * Kaggle score: 0.14264
  */
 run;
